@@ -271,6 +271,7 @@
         // ----------------------
         let index = 0;
         const images = document.querySelectorAll(".slider img");
+        let sliderInterval;
         
         // Make first image visible immediately
         if (images.length > 0) {
@@ -281,29 +282,23 @@
         function cambiarImagen() {
             if (images.length <= 1) return;
             
+            // Hide current image
+            images[index].style.opacity = "0";
+            images[index].classList.remove("active");
+            
             // Calculate next index
-            const nextIndex = (index + 1) % images.length;
+            index = (index + 1) % images.length;
             
-            // Show next image BEFORE hiding current one
-            images[nextIndex].style.zIndex = "3";
-            images[nextIndex].style.opacity = "1";
-            images[nextIndex].classList.add("active");
-            
-            // Short delay before hiding current image
-            setTimeout(() => {
-                images[index].style.opacity = "0";
-                images[index].classList.remove("active");
-                images[index].style.zIndex = "1";
-                
-                // Update index
-                index = nextIndex;
-            }, 100);
+            // Show next image
+            images[index].style.opacity = "1";
+            images[index].classList.add("active");
         }
         
         // Start the slider with 5 second intervals
         setTimeout(() => {
-            // Clear any existing intervals
-            const sliderInterval = setInterval(cambiarImagen, 5000);
+            // Clear any existing intervals to prevent duplicates
+            if (sliderInterval) clearInterval(sliderInterval);
+            sliderInterval = setInterval(cambiarImagen, 5000);
         }, 500);
 
         // Ensure all images are preloaded
