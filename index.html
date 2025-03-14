@@ -272,46 +272,51 @@
         let index = 0;
         const images = document.querySelectorAll(".slider img");
         
-        // Preload all images to ensure they're ready
-        images.forEach((img, i) => {
-            const preloadImg = new Image();
-            preloadImg.src = img.src;
-            
-            img.onload = function() {
-                console.log(`Image ${i+1} loaded successfully`);
-                if (i === 0) {
-                    img.style.opacity = "1";
+        // Ensure all images are preloaded
+        Promise.all(Array.from(images).map(img => {
+            return new Promise((resolve) => {
+                if (img.complete) {
+                    resolve();
+                } else {
+                    img.onload = resolve;
                 }
-            };
+            });
+        })).then(() => {
+            console.log("All images preloaded successfully");
+            // Start with first image visible
+            if (images.length > 0) {
+                images[0].style.opacity = "1";
+                images[0].classList.add("active");
+            }
+            
+            // Start the slider
+            startSlider();
         });
         
-        // Make sure first image is active on page load
-        if (images.length > 0) {
-            images[0].classList.add("active");
+        function startSlider() {
+            // Set interval for changing images
+            setInterval(cambiarImagen, 2500);
         }
 
         function cambiarImagen() {
-            if (images.length === 0) return;
+            if (images.length <= 1) return;
             
-            // Force immediate transition
-            requestAnimationFrame(() => {
-                // Hide current image immediately
-                images[index].style.opacity = "0";
-                images[index].classList.remove("active");
-                
-                // Change to next image
-                index = (index + 1) % images.length;
-                
-                // Show new image immediately
-                images[index].style.opacity = "1";
-                images[index].classList.add("active");
-                
-                console.log("Changed to image", index);
-            });
+            // Prepare next image index
+            const nextIndex = (index + 1) % images.length;
+            
+            // Make next image ready behind current one
+            images[nextIndex].style.zIndex = "1";
+            
+            // Show next image and hide current
+            images[nextIndex].style.opacity = "1";
+            images[nextIndex].classList.add("active");
+            
+            images[index].style.opacity = "0";
+            images[index].classList.remove("active");
+            
+            // Update index
+            index = nextIndex;
         }
-
-        // Reduced interval for faster cycling
-        setInterval(cambiarImagen, 2500); // Cambia cada 4 segundos
     </script>
 </body>
 </html>
