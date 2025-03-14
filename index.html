@@ -281,28 +281,28 @@
         function cambiarImagen() {
             if (images.length <= 1) return;
             
+            // Hide current image
+            images[index].style.opacity = "0";
+            images[index].classList.remove("active");
+            
             // Calculate next index
-            const nextIndex = (index + 1) % images.length;
+            index = (index + 1) % images.length;
             
-            // Show next image BEFORE hiding current one
-            images[nextIndex].style.zIndex = "3";
-            images[nextIndex].style.opacity = "1";
-            images[nextIndex].classList.add("active");
-            
-            // Short delay before hiding current image
-            setTimeout(() => {
-                images[index].style.opacity = "0";
-                images[index].classList.remove("active");
-                images[index].style.zIndex = "1";
-                
-                // Update index
-                index = nextIndex;
-            }, 100);
+            // If we just showed the last image, reset to first immediately
+            if (index === 0) {
+                // Show first image immediately
+                images[0].style.opacity = "1";
+                images[0].classList.add("active");
+            } else {
+                // Show next image
+                images[index].style.opacity = "1";
+                images[index].classList.add("active");
+            }
         }
         
-        // Start the slider after a short delay to ensure images are loaded
+        // Start the slider with 5 second intervals
         setTimeout(() => {
-            setInterval(cambiarImagen, 2500);
+            setInterval(cambiarImagen, 5000);
         }, 500);
 
         // Ensure all images are preloaded
