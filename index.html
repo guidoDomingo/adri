@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💖 Adri te quiero mucho 💖</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -17,57 +19,78 @@
             left: 0;
             z-index: 1;
         }
+        .content-container {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+        }
+        .slider-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .slider {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
+            width: 100%;
+            max-width: 400px;
             height: 400px;
             overflow: hidden;
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            z-index: 2;
+            margin: 0 auto;
+            position: relative; /* Added to contain absolutely positioned images */
         }
         .slider img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
+            top: 0;
+            left: 0;
             opacity: 0;
             transition: opacity 1s ease-in-out;
+            display: block;
         }
         .slider img.active {
-            opacity: 1;
+            opacity: 1 !important;
+            z-index: 2;
         }
-
-        /* Estilo de las descripciones */
+        
+        /* Media queries para ajustar tamaños en dispositivos pequeños */
+        @media (max-width: 768px) {
+            .slider {
+                height: 300px;
+                max-width: 300px;
+            }
+            .slider-container {
+                height: auto; /* Changed from 100% to auto for better mobile display */
+                padding: 20px 0;
+            }
+            .descripcion {
+                font-size: 16px;
+                padding: 10px;
+            }
+            .content-container {
+                height: auto;
+                padding: 20px 0;
+            }
+        }
         .descripcion {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
             color: #3e3e3e;
             text-align: center;
             font-family: 'Georgia', serif;
-            width: 250px;
-            z-index: 3;
+            font-size: 18px;
             padding: 15px;
-            box-sizing: border-box;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
             border: 2px solid #6c4f3d;
             font-weight: bold;
-        }
-        .izquierda {
-            left: 10px;
-        }
-        .derecha {
-            right: 10px;
+            margin: 20px auto;
+            max-width: 90%;
         }
         .descripcion p {
-            margin: 30px  0;
+            margin: 10px 0;
             line-height: 1.5;
         }
         /* Efecto pergamino: bordes decorativos */
@@ -77,36 +100,107 @@
             background-size: cover;
             border-radius: 12px;
             padding: 20px;
-            margin: 30px  0;
+        }
+        
+        /* Media queries para ajustar tamaños en dispositivos pequeños */
+        @media (max-width: 768px) {
+            .slider {
+                height: 300px;
+                max-width: 300px;
+            }
+            .descripcion {
+                font-size: 16px;
+                padding: 10px;
+            }
+            .content-container {
+                height: auto;
+                padding: 20px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .slider {
+                height: 250px;
+                max-width: 250px;
+            }
+            .descripcion {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
     <canvas id="miCanvas"></canvas>
-
-    <!-- Contenedor del slider -->
-    <div class="slider">
-        <img src="imagenes/adri1.jpg" class="active">
-        <img src="imagenes/adri2.jpg">
-        <img src="imagenes/adri3.jpg">
+    
+    <div class="content-container">
+        <div class="container h-100">
+            <!-- Para pantallas grandes: descripciones a los lados, imágenes en el centro -->
+            <div class="row h-100 align-items-center d-none d-md-flex">
+                <!-- Descripción Bíblica a la izquierda -->
+                <div class="col-md-3 d-flex align-items-center">
+                    <div class="descripcion">
+                        <p>"Y nosotros hemos conocido y creído el amor que Dios tiene para con nosotros." - 1 Juan 4:16</p>
+                    </div>
+                </div>
+                
+                <!-- Contenedor del slider -->
+                <div class="col-md-6 slider-container">
+                    <div class="slider">
+                        <img src="imagenes/adri1.jpg" class="active">
+                        <img src="imagenes/adri2.jpg">
+                        <img src="imagenes/adri3.jpg">
+                    </div>
+                </div>
+                
+                <!-- Descripción Bíblica a la derecha -->
+                <div class="col-md-3 d-flex align-items-center">
+                    <div class="descripcion">
+                        <p>"Amarás al Señor tu Dios con todo tu corazón, con toda tu alma y con toda tu mente." - Mateo 22:37</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Para pantallas pequeñas: imágenes arriba, descripciones abajo -->
+            <div class="row d-md-none">
+                <!-- Contenedor del slider -->
+                <div class="col-12 slider-container py-4">
+                    <div class="slider">
+                        <img src="imagenes/adri1.jpg" class="active">
+                        <img src="imagenes/adri2.jpg">
+                        <img src="imagenes/adri3.jpg">
+                    </div>
+                </div>
+                
+                <!-- Descripciones Bíblicas abajo -->
+                <div class="col-12 mb-3">
+                    <div class="descripcion">
+                        <p>"Y nosotros hemos conocido y creído el amor que Dios tiene para con nosotros." - 1 Juan 4:16</p>
+                    </div>
+                </div>
+                
+                <div class="col-12 mb-3">
+                    <div class="descripcion">
+                        <p>"Amarás al Señor tu Dios con todo tu corazón, con toda tu alma y con toda tu mente." - Mateo 22:37</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Descripción Bíblica a la izquierda -->
-    <div class="descripcion izquierda">
-        <p>"Y nosotros hemos conocido y creído el amor que Dios tiene para con nosotros." - 1 Juan 4:16</p>
-    </div>
-
-    <!-- Descripción Bíblica a la derecha -->
-    <div class="descripcion derecha">
-        <p>"Amarás al Señor tu Dios con todo tu corazón, con toda tu alma y con toda tu mente." - Mateo 22:37</p>
-    </div>
-
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const canvas = document.getElementById("miCanvas");
         const ctx = canvas.getContext("2d");
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // Ajustar el tamaño del canvas al tamaño de la ventana
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
         let t = 0; // Variable de tiempo para la animación
 
@@ -123,10 +217,25 @@
         }
 
         function escribirTexto() {
-            ctx.font = "40px Arial";
+            ctx.font = "bold 40px Arial";
             ctx.fillStyle = "white";
             ctx.textAlign = "center";
-            ctx.fillText("Adri te quiero mucho ❤️", canvas.width / 2, 100 + Math.sin(t) * 10);
+            
+            // Posición del texto ajustada para diferentes tamaños de pantalla
+            let textY = 60; // Reduced from 100 to appear higher
+            
+            // Texto responsivo para dispositivos pequeños
+            if (window.innerWidth < 768) {
+                ctx.font = "bold 30px Arial";
+                textY = 50; // Reduced to appear above images on tablets
+            }
+            if (window.innerWidth < 576) {
+                ctx.font = "bold 24px Arial";
+                textY = 40; // Reduced to appear above images on mobile
+            }
+            
+            // Dibujar el texto con la posición ajustada
+            ctx.fillText("Adri te quiero mucho ❤️", canvas.width / 2, textY + Math.sin(t) * 10);
         }
 
         function animar() {
@@ -143,6 +252,13 @@
 
             // Animación del latido del corazón
             let escala = 50 + Math.sin(t * 3) * 5;
+            // Ajustar escala para dispositivos pequeños
+            if (window.innerWidth < 768) {
+                escala = 40 + Math.sin(t * 3) * 4;
+            }
+            if (window.innerWidth < 576) {
+                escala = 30 + Math.sin(t * 3) * 3;
+            }
             dibujarCorazon(canvas.width / 2, canvas.height / 2, escala);
 
             requestAnimationFrame(animar);
@@ -155,11 +271,37 @@
         // ----------------------
         let index = 0;
         const images = document.querySelectorAll(".slider img");
+        
+        // Add event listeners to check if images are loading
+        images.forEach((img, i) => {
+            img.onload = function() {
+                console.log(`Image ${i+1} loaded successfully`);
+                // Force the active class to apply immediately for the first image
+                if (i === 0) {
+                    img.style.opacity = "1";
+                }
+            };
+            
+            img.onerror = function() {
+                console.error(`Error loading image ${i+1}: ${img.src}`);
+            };
+        });
+        
+        // Make sure first image is active on page load
+        if (images.length > 0) {
+            images[0].classList.add("active");
+        }
 
         function cambiarImagen() {
+            // Only proceed if we have images
+            if (images.length === 0) return;
+            
             images[index].classList.remove("active");
             index = (index + 1) % images.length;
             images[index].classList.add("active");
+            
+            // Debug log to check if function is running
+            console.log("Changed to image", index);
         }
 
         setInterval(cambiarImagen, 4000); // Cambia cada 4 segundos
