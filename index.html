@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖 Adri te quiero mucho 💖</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+        }
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .slider {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            z-index: 2;
+        }
+        .slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .slider img.active {
+            opacity: 1;
+        }
+
+        /* Estilo de las descripciones */
+        .descripcion {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #3e3e3e;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            width: 250px;
+            z-index: 3;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid #6c4f3d;
+            font-weight: bold;
+        }
+        .izquierda {
+            left: 10px;
+        }
+        .derecha {
+            right: 10px;
+        }
+        .descripcion p {
+            margin: 30px  0;
+            line-height: 1.5;
+        }
+        /* Efecto pergamino: bordes decorativos */
+        .descripcion {
+            border: 3px solid #6c4f3d;
+            background: url('https://www.transparenttextures.com/patterns/old-map.png');
+            background-size: cover;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px  0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="miCanvas"></canvas>
+
+    <!-- Contenedor del slider -->
+    <div class="slider">
+        <img src="imagenes/adri1.jpg" class="active">
+        <img src="imagenes/adri2.jpg">
+        <img src="imagenes/adri3.jpg">
+    </div>
+
+    <!-- Descripción Bíblica a la izquierda -->
+    <div class="descripcion izquierda">
+        <p>"Y nosotros hemos conocido y creído el amor que Dios tiene para con nosotros." - 1 Juan 4:16</p>
+    </div>
+
+    <!-- Descripción Bíblica a la derecha -->
+    <div class="descripcion derecha">
+        <p>"Amarás al Señor tu Dios con todo tu corazón, con toda tu alma y con toda tu mente." - Mateo 22:37</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("miCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let t = 0; // Variable de tiempo para la animación
+
+        function dibujarCorazon(x, y, tamaño) {
+            ctx.beginPath();
+            ctx.moveTo(x, y + tamaño / 4);
+            ctx.bezierCurveTo(x, y, x - tamaño, y, x - tamaño, y + tamaño / 4);
+            ctx.bezierCurveTo(x - tamaño, y + tamaño / 2, x, y + tamaño, x, y + tamaño * 1.5);
+            ctx.bezierCurveTo(x, y + tamaño, x + tamaño, y + tamaño / 2, x + tamaño, y + tamaño / 4);
+            ctx.bezierCurveTo(x + tamaño, y, x, y, x, y + tamaño / 4);
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function escribirTexto() {
+            ctx.font = "40px Arial";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.fillText("Adri te quiero mucho ❤️", canvas.width / 2, 100 + Math.sin(t) * 10);
+        }
+
+        function animar() {
+            t += 0.05; // Incremento de tiempo para animaciones
+
+            // Fondo con efecto de cambio de color
+            const r = Math.floor(128 + 127 * Math.sin(t * 0.3));
+            const g = Math.floor(128 + 127 * Math.sin(t * 0.5));
+            const b = Math.floor(128 + 127 * Math.sin(t * 0.7));
+            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            escribirTexto();
+
+            // Animación del latido del corazón
+            let escala = 50 + Math.sin(t * 3) * 5;
+            dibujarCorazon(canvas.width / 2, canvas.height / 2, escala);
+
+            requestAnimationFrame(animar);
+        }
+
+        animar();
+
+        // ----------------------
+        // Slider de Imágenes
+        // ----------------------
+        let index = 0;
+        const images = document.querySelectorAll(".slider img");
+
+        function cambiarImagen() {
+            images[index].classList.remove("active");
+            index = (index + 1) % images.length;
+            images[index].classList.add("active");
+        }
+
+        setInterval(cambiarImagen, 4000); // Cambia cada 4 segundos
+    </script>
+</body>
+</html>
