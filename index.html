@@ -272,6 +272,39 @@
         let index = 0;
         const images = document.querySelectorAll(".slider img");
         
+        // Make first image visible immediately
+        if (images.length > 0) {
+            images[0].style.opacity = "1";
+            images[0].classList.add("active");
+        }
+        
+        function cambiarImagen() {
+            if (images.length <= 1) return;
+            
+            // Calculate next index
+            const nextIndex = (index + 1) % images.length;
+            
+            // Show next image BEFORE hiding current one
+            images[nextIndex].style.zIndex = "3";
+            images[nextIndex].style.opacity = "1";
+            images[nextIndex].classList.add("active");
+            
+            // Short delay before hiding current image
+            setTimeout(() => {
+                images[index].style.opacity = "0";
+                images[index].classList.remove("active");
+                images[index].style.zIndex = "1";
+                
+                // Update index
+                index = nextIndex;
+            }, 100);
+        }
+        
+        // Start the slider after a short delay to ensure images are loaded
+        setTimeout(() => {
+            setInterval(cambiarImagen, 2500);
+        }, 500);
+
         // Ensure all images are preloaded
         Promise.all(Array.from(images).map(img => {
             return new Promise((resolve) => {
