@@ -272,18 +272,16 @@
         let index = 0;
         const images = document.querySelectorAll(".slider img");
         
-        // Add event listeners to check if images are loading
+        // Preload all images to ensure they're ready
         images.forEach((img, i) => {
+            const preloadImg = new Image();
+            preloadImg.src = img.src;
+            
             img.onload = function() {
                 console.log(`Image ${i+1} loaded successfully`);
-                // Force the active class to apply immediately for the first image
                 if (i === 0) {
                     img.style.opacity = "1";
                 }
-            };
-            
-            img.onerror = function() {
-                console.error(`Error loading image ${i+1}: ${img.src}`);
             };
         });
         
@@ -293,26 +291,27 @@
         }
 
         function cambiarImagen() {
-            // Only proceed if we have images
             if (images.length === 0) return;
             
-            // Immediately hide current image
-            images[index].style.opacity = "0";
-            images[index].classList.remove("active");
-            
-            // Change to next image
-            index = (index + 1) % images.length;
-            
-            // Immediately show new image
-            images[index].style.opacity = "1";
-            images[index].classList.add("active");
-            
-            // Debug log to check if function is running
-            console.log("Changed to image", index);
+            // Force immediate transition
+            requestAnimationFrame(() => {
+                // Hide current image immediately
+                images[index].style.opacity = "0";
+                images[index].classList.remove("active");
+                
+                // Change to next image
+                index = (index + 1) % images.length;
+                
+                // Show new image immediately
+                images[index].style.opacity = "1";
+                images[index].classList.add("active");
+                
+                console.log("Changed to image", index);
+            });
         }
 
-        // Reduced interval from 4000ms to 3000ms for faster cycling
-        setInterval(cambiarImagen, 3000); // Cambia cada 4 segundos
+        // Reduced interval for faster cycling
+        setInterval(cambiarImagen, 2500); // Cambia cada 4 segundos
     </script>
 </body>
 </html>
