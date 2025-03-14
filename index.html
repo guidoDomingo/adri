@@ -267,44 +267,44 @@
         animar();
 
         // ----------------------
-        // Slider de Imágenes
+        // Carrusel de Imágenes
         // ----------------------
-        let index = 0;
-        const images = document.querySelectorAll(".slider img");
-        let sliderInterval;
+        let currentImage = 0;
+        const allImages = document.querySelectorAll(".slider img");
+        let carouselInterval;
         
         // Hide all images initially
-        images.forEach(img => {
+        allImages.forEach(img => {
             img.style.opacity = "0";
             img.classList.remove("active");
         });
         
         // Make first image visible immediately
-        if (images.length > 0) {
-            images[0].style.opacity = "1";
-            images[0].classList.add("active");
+        if (allImages.length > 0) {
+            allImages[0].style.opacity = "1";
+            allImages[0].classList.add("active");
         }
         
-        function cambiarImagen() {
-            if (images.length <= 1) return;
+        function showNextImage() {
+            if (allImages.length <= 1) return;
             
             // Hide current image
-            images[index].style.opacity = "0";
-            images[index].classList.remove("active");
+            allImages[currentImage].style.opacity = "0";
+            allImages[currentImage].classList.remove("active");
             
-            // Calculate next index
-            index = (index + 1) % images.length;
+            // Calculate next image index
+            currentImage = (currentImage + 1) % allImages.length;
             
             // Show next image
-            images[index].style.opacity = "1";
-            images[index].classList.add("active");
+            allImages[currentImage].style.opacity = "1";
+            allImages[currentImage].classList.add("active");
         }
         
-        // Start the slider with 5 second intervals
+        // Start the carousel with 5 second intervals
         setTimeout(() => {
             // Clear any existing intervals to prevent duplicates
-            if (sliderInterval) clearInterval(sliderInterval);
-            sliderInterval = setInterval(cambiarImagen, 5000);
+            if (carouselInterval) clearInterval(carouselInterval);
+            carouselInterval = setInterval(showNextImage, 5000);
         }, 500);
 
         // Ensure all images are preloaded
