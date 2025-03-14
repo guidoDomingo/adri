@@ -48,7 +48,7 @@
             top: 0;
             left: 0;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.5s ease-in-out; /* Reduced from 1s to 0.5s for faster transitions */
             display: block;
         }
         .slider img.active {
@@ -296,15 +296,23 @@
             // Only proceed if we have images
             if (images.length === 0) return;
             
+            // Immediately hide current image
+            images[index].style.opacity = "0";
             images[index].classList.remove("active");
+            
+            // Change to next image
             index = (index + 1) % images.length;
+            
+            // Immediately show new image
+            images[index].style.opacity = "1";
             images[index].classList.add("active");
             
             // Debug log to check if function is running
             console.log("Changed to image", index);
         }
 
-        setInterval(cambiarImagen, 4000); // Cambia cada 4 segundos
+        // Reduced interval from 4000ms to 3000ms for faster cycling
+        setInterval(cambiarImagen, 3000); // Cambia cada 4 segundos
     </script>
 </body>
 </html>
