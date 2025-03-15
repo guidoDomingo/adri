@@ -235,7 +235,7 @@
             }
             
             // Dibujar el texto con la posición ajustada
-            ctx.fillText("Adri te quiero mucho ❤️", canvas.width / 2, textY + Math.sin(t) * 10);
+            ctx.fillText("Adri Burgos ❤️", canvas.width / 2, textY + Math.sin(t) * 10);
         }
 
         function animar() {
@@ -272,6 +272,37 @@
         let currentImage = 0;
         const allImages = document.querySelectorAll(".slider img");
         let carouselInterval;
+        const bibleVerses = [
+            "El amor es paciente, es bondadoso. - 1 Corintios 13:4",
+            "Todo lo puedo en Cristo que me fortalece. - Filipenses 4:13",
+            "Porque donde está tu tesoro, allí estará también tu corazón. - Mateo 6:21"
+        ];
+        let currentVerse = 0;
+        let showingVerse = false;
+
+        function showVerse() {
+            const verseDiv = document.createElement('div');
+            verseDiv.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                font-family: Georgia, serif;
+                font-size: 20px;
+                text-align: center;
+                z-index: 1000;
+            `;
+            verseDiv.textContent = bibleVerses[currentVerse];
+            document.querySelector('.slider').appendChild(verseDiv);
+            
+            setTimeout(() => {
+                verseDiv.remove();
+            }, 1000);
+        }
         
         function showNextImage() {
             if (allImages.length <= 1) return;
@@ -280,13 +311,27 @@
             allImages[currentImage].style.opacity = "0";
             allImages[currentImage].classList.remove("active");
             
+            // Show verse
+            showVerse();
+            
+            // Update verse index
+            currentVerse = (currentVerse + 1) % bibleVerses.length;
+            
             // Calculate next image index
             currentImage = (currentImage + 1) % allImages.length;
             
-            // Show next image
-            allImages[currentImage].style.opacity = "1";
-            allImages[currentImage].classList.add("active");
+            // Show next image after verse display
+            setTimeout(() => {
+                allImages[currentImage].style.opacity = "1";
+                allImages[currentImage].classList.add("active");
+            }, 1000);
         }
+
+        // Start carousel immediately and ensure it runs continuously
+        if (carouselInterval) clearInterval(carouselInterval);
+        carouselInterval = setInterval(showNextImage, 4000);
+
+        // Remove all the other carousel-related code below this point
         
         // Initialize carousel
         function initCarousel() {
