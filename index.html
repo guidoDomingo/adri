@@ -273,18 +273,6 @@
         const allImages = document.querySelectorAll(".slider img");
         let carouselInterval;
         
-        // Hide all images initially
-        allImages.forEach(img => {
-            img.style.opacity = "0";
-            img.classList.remove("active");
-        });
-        
-        // Make first image visible immediately
-        if (allImages.length > 0) {
-            allImages[0].style.opacity = "1";
-            allImages[0].classList.add("active");
-        }
-        
         function showNextImage() {
             if (allImages.length <= 1) return;
             
@@ -300,12 +288,21 @@
             allImages[currentImage].classList.add("active");
         }
         
-        // Start the carousel with 5 second intervals
-        setTimeout(() => {
-            // Clear any existing intervals to prevent duplicates
+        // Initialize carousel
+        function initCarousel() {
+            // Make sure first image is visible
+            if (allImages.length > 0) {
+                allImages[0].style.opacity = "1";
+                allImages[0].classList.add("active");
+            }
+            
+            // Start the carousel
             if (carouselInterval) clearInterval(carouselInterval);
             carouselInterval = setInterval(showNextImage, 5000);
-        }, 500);
+        }
+
+        // Start carousel when page loads
+        window.addEventListener('load', initCarousel);
 
         // Ensure all images are preloaded
         Promise.all(Array.from(images).map(img => {
