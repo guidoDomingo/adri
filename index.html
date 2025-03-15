@@ -281,27 +281,32 @@
         let showingVerse = false;
 
         function showVerse() {
-            const verseDiv = document.createElement('div');
-            verseDiv.style.cssText = `
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(0, 0, 0, 0.8);
-                color: white;
-                padding: 20px;
-                border-radius: 10px;
-                font-family: Georgia, serif;
-                font-size: 20px;
-                text-align: center;
-                z-index: 1000;
-            `;
-            verseDiv.textContent = bibleVerses[currentVerse];
-            document.querySelector('.slider').appendChild(verseDiv);
-            
-            setTimeout(() => {
-                verseDiv.remove();
-            }, 1000);
+            // Create verse div for both desktop and mobile sliders
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                const verseDiv = document.createElement('div');
+                verseDiv.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    font-family: Georgia, serif;
+                    font-size: 20px;
+                    text-align: center;
+                    z-index: 1000;
+                    width: 80%;
+                `;
+                verseDiv.textContent = bibleVerses[currentVerse];
+                slider.appendChild(verseDiv);
+                
+                setTimeout(() => {
+                    verseDiv.remove();
+                }, 1000);
+            });
         }
         
         function showNextImage() {
